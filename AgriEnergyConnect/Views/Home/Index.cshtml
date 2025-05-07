@@ -1,17 +1,29 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@using AgriEnergyConnect.Models
+@inject UserManager<ApplicationUser> UserManager
+
 @{
     ViewData["Title"] = "Home Page";
+    var currentUser = await UserManager.GetUserAsync(User);
 }
 
+@if (currentUser == null)
+{
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <h2 class="mb-4">Welcome to Agri-Energy Connect</h2>
+                <p class="lead">Log in or register to explore farmer profiles, products, and green tech solutions.</p>
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 text-center">
-            <h2 class="mb-4">Welcome to Agri-Energy Connect</h2>
-            <p class="lead">Log in or register to explore farmer profiles, products, and green tech solutions.</p>
-
-            <a class="btn btn-primary btn-lg m-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
-            <a class="btn btn-outline-secondary btn-lg m-2" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                <a class="btn btn-primary btn-lg m-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                <a class="btn btn-outline-secondary btn-lg m-2" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </div>
         </div>
     </div>
-</div>
+}
+else{
+    <div>
+        <h1>Wellcome @currentUser.FullName</h1>
+    </div>
+}
+

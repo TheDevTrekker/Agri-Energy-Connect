@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
+using AgriEnergyConnect.Data;
 
 namespace AgriEnergyConnect.Areas.Identity.Pages.Account
 {
@@ -30,12 +33,15 @@ namespace AgriEnergyConnect.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
+        private readonly ApplicationDbContext _context;
+
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -43,6 +49,7 @@ namespace AgriEnergyConnect.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
 
@@ -77,9 +84,17 @@ namespace AgriEnergyConnect.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
+            [Required]
+            [Phone]
+            [Display(Name = "Phone Number")]
+            public string PhoneNumber { get; set; }
+
 
             [Required]
             public string Role { get; set; }
+
+            [Display(Name ="Location")]
+            public string? Location { get; set; }
         }
 
 
@@ -101,6 +116,7 @@ namespace AgriEnergyConnect.Areas.Identity.Pages.Account
                     UserName = Input.Email,
                     Email = Input.Email,
                     FullName = Input.FullName,
+                    PhoneNumber = Input.PhoneNumber
                 };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -115,24 +131,41 @@ namespace AgriEnergyConnect.Areas.Identity.Pages.Account
                     // Add user to selected role
                     await _userManager.AddToRoleAsync(user, Input.Role);
 
-                    _logger.LogInformation("User created a new account with password.");
+                    // Save role specifc table
+                    if (Input.Role == "Employee")
+                    {
+                        var employee = new Employee
+                        {
+                            ApplicationUserId = user.Id,
+                            FullName = Input.FullName,
+                            ContactInfo = Input.PhoneNumber,
+                        };
 
+                        _context.Employees.Add(employee);
+                    }
+                    if (Input.Role == "Farmer")
+                    {
+                        var farmer = new Farmer
+                        {
+                            ApplicationUserId = user.Id,
+                            FullName = Input.FullName,
+                            Location = Input.Location,
+                            ContactInfo = Input.PhoneNumber,
+                        };
+
+                        _context.Farmers.Add(farmer);
+                    }
+
+                    await _context.SaveChangesAsync();
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
                     // Redirect based on role
-                    if (await _userManager.IsInRoleAsync(user, "Farmer"))
+                    return Input.Role switch
                     {
-                        return RedirectToAction("Farmer", "Dashboard");
-                    }
-                    else if (await _userManager.IsInRoleAsync(user, "Employee"))
-                    {
-                        return RedirectToAction("Employee", "Dashboard");
-                    }
-                    else
-                    {
-                        // Default fallback
-                        return RedirectToPage("/Index");
-                    }
+                        "Farmer" => RedirectToAction("Dashboard", "Farmer"),
+                        "Employee" => RedirectToAction("Dashboard", "Employee"),
+                        _ => RedirectToPage("/Index") // Fallback
+                    };
                 }
                 foreach (var error in result.Errors)
                 {

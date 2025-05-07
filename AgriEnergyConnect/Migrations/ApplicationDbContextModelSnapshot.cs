@@ -91,6 +91,39 @@ namespace AgriEnergyConnect.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("AgriEnergyConnect.Models.Employee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationUserId1")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ContactInfo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ApplicationUserId1")
+                        .IsUnique()
+                        .HasFilter("[ApplicationUserId1] IS NOT NULL");
+
+                    b.ToTable("Employees");
+                });
+
             modelBuilder.Entity("AgriEnergyConnect.Models.Farmer", b =>
                 {
                     b.Property<int>("Id")
@@ -100,6 +133,10 @@ namespace AgriEnergyConnect.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationUserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ContactInfo")
@@ -116,23 +153,11 @@ namespace AgriEnergyConnect.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Farmers");
+                    b.HasIndex("ApplicationUserId1")
+                        .IsUnique()
+                        .HasFilter("[ApplicationUserId1] IS NOT NULL");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ContactInfo = "082 843 2634",
-                            FullName = "Thabo Mokoena",
-                            Location = "Free State"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ContactInfo = "082 691 0340",
-                            FullName = "Anika Jacobs",
-                            Location = "Western Cape"
-                        });
+                    b.ToTable("Farmers");
                 });
 
             modelBuilder.Entity("AgriEnergyConnect.Models.Product", b =>
@@ -162,24 +187,6 @@ namespace AgriEnergyConnect.Migrations
                     b.HasIndex("FarmerId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Category = "Vegetables",
-                            FarmerId = 1,
-                            Name = "Tomatoes",
-                            ProductionDate = new DateTime(2024, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Category = "Green Tech",
-                            FarmerId = 2,
-                            Name = "Wind-Powered Water Pump",
-                            ProductionDate = new DateTime(2025, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -319,12 +326,32 @@ namespace AgriEnergyConnect.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AgriEnergyConnect.Models.Employee", b =>
+                {
+                    b.HasOne("AgriEnergyConnect.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AgriEnergyConnect.Models.ApplicationUser", null)
+                        .WithOne("EmployeeProfile")
+                        .HasForeignKey("AgriEnergyConnect.Models.Employee", "ApplicationUserId1");
+
+                    b.Navigation("ApplicationUser");
+                });
+
             modelBuilder.Entity("AgriEnergyConnect.Models.Farmer", b =>
                 {
                     b.HasOne("AgriEnergyConnect.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.HasOne("AgriEnergyConnect.Models.ApplicationUser", null)
+                        .WithOne("FarmerProfile")
+                        .HasForeignKey("AgriEnergyConnect.Models.Farmer", "ApplicationUserId1");
 
                     b.Navigation("ApplicationUser");
                 });
@@ -389,6 +416,13 @@ namespace AgriEnergyConnect.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AgriEnergyConnect.Models.ApplicationUser", b =>
+                {
+                    b.Navigation("EmployeeProfile");
+
+                    b.Navigation("FarmerProfile");
                 });
 
             modelBuilder.Entity("AgriEnergyConnect.Models.Farmer", b =>
