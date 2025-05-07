@@ -55,4 +55,10 @@ app.MapControllerRoute(
 
 app.MapRazorPages();        // ✅ Required to load Razor Pages like Login/Register
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await IdentitySeeder.SeedRolesAndUsersAsync(services);
+}
+
 app.Run();
