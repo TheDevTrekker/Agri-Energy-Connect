@@ -23,7 +23,7 @@ namespace AgriEnergyConnect.Data
                 .HasOne(f => f.ApplicationUser)
                 .WithMany()
                 .HasForeignKey(f => f.ApplicationUserId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Product>()
                 .HasOne(p => p.Farmer)

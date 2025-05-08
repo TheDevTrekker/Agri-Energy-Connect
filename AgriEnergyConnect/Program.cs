@@ -2,6 +2,7 @@ using AgriEnergyConnect.Data;
 using AgriEnergyConnect.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,19 +20,6 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    string[] roles = { "Farmer", "Employee" };
-
-    foreach (var role in roles)
-    {
-        if (!await roleManager.RoleExistsAsync(role))
-        {
-            await roleManager.CreateAsync(new IdentityRole(role));
-        }
-    }
-}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -57,7 +45,24 @@ app.MapRazorPages();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    await SeedDataAsync(services); 
+    var dbContext = services.GetRequiredService<ApplicationDbContext>();
+
+    // Delete and recreate the DB (for development only)
+    await dbContext.Database.EnsureDeletedAsync();
+    await dbContext.Database.EnsureCreatedAsync();
+
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    string[] roles = { "Farmer", "Employee" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+
+    await SeedDataAsync(services);
 }
 
 app.Run();
@@ -82,12 +87,34 @@ static async Task SeedDataAsync(IServiceProvider serviceProvider)
         await userManager.CreateAsync(farmerUser, "Farmer123!");
         await userManager.AddToRoleAsync(farmerUser, "Farmer");
 
-        dbContext.Farmers.Add(new Farmer
+        var farmerProfile = new Farmer
         {
             ApplicationUserId = farmerUser.Id,
             FullName = farmerUser.FullName,
-            ContactInfo = farmerUser.PhoneNumber
-        });
+            ContactInfo = farmerUser.PhoneNumber,
+            Location = "123 Farm Lane"
+        };
+
+        dbContext.Farmers.Add(farmerProfile);
+        await dbContext.SaveChangesAsync(); // Save so the Farmer gets an Id
+
+        // Add two products for this farmer
+        dbContext.Products.AddRange(
+            new Product
+            {
+                FarmerId = farmerProfile.Id,
+                Name = "Organic Tomatoes",
+                Category = "Produce",
+                ProductionDate = DateTime.Parse("2025-03-05")
+            },
+            new Product
+            {
+                FarmerId = farmerProfile.Id,
+                Name = "Free-range Eggs",
+                Category = "Animal Produce",
+                ProductionDate= DateTime.Parse("2024-08-22"),
+            }
+        );
     }
 
     // Seed Employee

@@ -3,6 +3,7 @@ using AgriEnergyConnect.Models;
 using AgriEnergyConnect.Models.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgriEnergyConnect.Controllers.Employee
@@ -89,6 +90,29 @@ namespace AgriEnergyConnect.Controllers.Employee
 
             TempData["SuccessMessage"] = "Farmer successfully added!";
             return RedirectToAction("AddFarmer");  // Redirect to the AddFarmer view or elsewhere
+        }
+
+
+        public async Task<IActionResult> ViewProducts()
+        {
+            var farmers = await _context.Farmers.ToListAsync(); // Retrieve list of farmers
+            ViewBag.Farmers = new SelectList(farmers, "Id", "FullName"); // Populate dropdown list with farmer names
+
+            return View();
+        }
+
+        public async Task<IActionResult> GetProducts(int farmerId)
+        {
+            var farmer = await _context.Farmers
+                .Include(f => f.Products)  // Assuming Products is a navigation property in Farmer
+                .FirstOrDefaultAsync(f => f.Id == farmerId);
+
+            if (farmer == null)
+            {
+                return NotFound();
+            }
+
+            return PartialView("_ProductList", farmer.Products); // Return products as a partial view
         }
 
     }

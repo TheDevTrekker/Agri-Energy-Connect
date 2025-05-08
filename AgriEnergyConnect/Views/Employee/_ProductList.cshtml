@@ -1,0 +1,29 @@
+﻿@model IEnumerable<AgriEnergyConnect.Models.Product>
+
+@if (Model.Any())
+{
+    <h3>Products for Selected Farmer</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Production Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Category</td>
+                    <td>@product.ProductionDate.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No products available for this farmer.</p>
+}
