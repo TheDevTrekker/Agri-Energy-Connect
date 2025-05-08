@@ -7,6 +7,18 @@
     var currentUser = await UserManager.GetUserAsync(User);
 }
 
+<head>
+    <style>
+        body{
+            background-image: url('/images/Background.jpg');
+            background-size: cover; /* Optional: scales the image to cover the whole background */
+            background-repeat: no-repeat; /* Optional: prevents tiling */
+            background-position: center;
+        }
+    </style>
+</head>
+
+
 @if (currentUser == null)
 {
     <div class="container mt-5">
@@ -23,7 +35,7 @@
 }
 else{
     <div>
-        <h1>Wellcome @currentUser.FullName</h1>
+        <h1>Welcome, @currentUser.FullName</h1>
     </div>
 }
 

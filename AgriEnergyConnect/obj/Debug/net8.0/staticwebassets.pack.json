@@ -13,6 +13,18 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\Derik\\source\\repos\\AgriEnergyConnect\\AgriEnergyConnect\\wwwroot\\images\\Background.jpg",
+      "PackagePath": "staticwebassets\\images\\Background.jpg"
+    },
+    {
+      "Id": "C:\\Users\\Derik\\source\\repos\\AgriEnergyConnect\\AgriEnergyConnect\\wwwroot\\images\\Logo-Agri.png",
+      "PackagePath": "staticwebassets\\images\\Logo-Agri.png"
+    },
+    {
+      "Id": "C:\\Users\\Derik\\source\\repos\\AgriEnergyConnect\\AgriEnergyConnect\\wwwroot\\images\\svg_account.svg",
+      "PackagePath": "staticwebassets\\images\\svg_account.svg"
+    },
+    {
       "Id": "C:\\Users\\Derik\\source\\repos\\AgriEnergyConnect\\AgriEnergyConnect\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
