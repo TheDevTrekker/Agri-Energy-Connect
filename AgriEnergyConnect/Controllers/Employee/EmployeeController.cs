@@ -101,7 +101,7 @@ namespace AgriEnergyConnect.Controllers.Employee
             return View();
         }
 
-        public async Task<IActionResult> GetProducts(int farmerId)
+        public async Task<IActionResult> GetProducts(int farmerId, DateTime? startDate, DateTime? endDate, string productType)
         {
             var farmer = await _context.Farmers
                 .Include(f => f.Products)  // Assuming Products is a navigation property in Farmer
@@ -112,7 +112,24 @@ namespace AgriEnergyConnect.Controllers.Employee
                 return NotFound();
             }
 
-            return PartialView("_ProductList", farmer.Products); // Return products as a partial view
+            var products = farmer.Products.AsQueryable();
+
+            if (startDate.HasValue)
+            {
+                products = products.Where(p => p.ProductionDate >= startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                products = products.Where(p => p.ProductionDate <= endDate.Value);
+            }
+
+            if (!string.IsNullOrEmpty(productType))
+            {
+                products = products.Where(p => p.Category == productType);
+            }
+
+            return PartialView("_ProductList", products.ToList());
         }
 
     }

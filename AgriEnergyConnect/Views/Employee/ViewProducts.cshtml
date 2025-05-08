@@ -4,44 +4,120 @@
     ViewData["Title"] = "View Products";
 }
 
+<h2>View Products</h2>
 
-<h1>Select a Farmer</h1>
-
-<form id="farmerForm">
-    <div>
+<div class="row">
+    <!-- Farmer Selection (left) -->
+    <div class="col-md-3">
         <label for="farmerDropdown">Select Farmer:</label>
-        <select id="farmerDropdown" name="farmerId" asp-items="ViewBag.Farmers">
+        <select id="farmerDropdown" class="form-control" asp-items="ViewBag.Farmers">
             <option value="">-- Select a Farmer --</option>
         </select>
     </div>
 
-    <div id="products-container">
-        <!-- Product list will be loaded here via AJAX -->
-    </div>
-</form>
+    <!-- Filter tags and content (right) -->
+    <div class="col-md-9">
+        <!-- Filter tags -->
+        <div id="filter-tags" class="mb-3">
+            <!-- Dynamically inserted tags like: Date > 01/01/2024 × -->
+        </div>
 
+        <!-- Filters Sidebar -->
+        <div class="d-flex justify-content-end mb-2 gap-2">
+            <input type="date" id="startDate" class="form-control" />
+            <input type="date" id="endDate" class="form-control" />
+            <input type="text" id="productType" placeholder="Category" class="form-control" />
+            <button id="clearFilters" class="btn btn-outline-secondary">Clear Filters</button>
+        </div>
+
+        <!-- Products Result -->
+        <div id="products-container">
+            <!-- Loaded via AJAX -->
+        </div>
+    </div>
+</div>
 @section Scripts {
     <script>
-        $(document).ready(function () {
-            $('#farmerDropdown').change(function () {
-                var farmerId = $(this).val();
-                if (farmerId) {
-                    $.ajax({
-                        url: '@Url.Action("GetProducts", "Employee")',  // Action to get products
-                        type: 'GET',
-                        data: { farmerId: farmerId },
-                        success: function (response) {
-                            $('#products-container').html(response);  // Insert product list into container
-                        },
-                        error: function () {
-                            alert('Error loading products');
-                        }
-                    });
-                } else {
-                    $('#products-container').empty();  // Clear product list if no farmer is selected
+        let currentFilters = {};
+
+        function loadProducts() {
+            const farmerId = $('#farmerDropdown').val();
+            if (!farmerId) {
+                $('#products-container').html('<div>Please select a farmer.</div>');
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("GetProducts", "Employee")',
+                type: 'GET',
+                data: {
+                    farmerId: farmerId,
+                    startDate: currentFilters.startDate || '',
+                    endDate: currentFilters.endDate || '',
+                    productType: currentFilters.productType || ''
+                },
+                success: function (response) {
+                    $('#products-container').html(response);
+                    renderFilterTags();
+                },
+                error: function () {
+                    alert('Error loading products');
                 }
+            });
+        }
+
+        function renderFilterTags() {
+            const $tagContainer = $('#filter-tags');
+            $tagContainer.empty();
+
+            for (const [key, value] of Object.entries(currentFilters)) {
+                if (value) {
+                    const label = {
+                        startDate: 'Start Date',
+                        endDate: 'End Date',
+                        productType: 'Type'
+                    }[key] || key;
+
+                    $tagContainer.append(`
+                            <span class="badge bg-primary me-1">
+                                ${label}: ${value}
+                                <a href="#" class="text-white ms-1 remove-filter" data-key="${key}">&times;</a>
+                            </span>
+                        `);
+                }
+            }
+        }
+
+        $(document).ready(function () {
+            // Load products when farmer changes
+            $('#farmerDropdown').change(function () {
+                currentFilters = {};  // Reset filters when changing farmer
+                loadProducts();
+            });
+
+            // Auto-update filters
+            $('#startDate, #endDate, #productType').on('change', function () {
+                currentFilters.startDate = $('#startDate').val();
+                currentFilters.endDate = $('#endDate').val();
+                currentFilters.productType = $('#productType').val();
+                loadProducts();
+            });
+
+            // Remove individual filter
+            $('#filter-tags').on('click', '.remove-filter', function (e) {
+                e.preventDefault();
+                const key = $(this).data('key');
+                delete currentFilters[key];
+                $(`#${key}`).val('');
+                loadProducts();
+            });
+
+            // Clear all filters
+            $('#clearFilters').click(function () {
+                currentFilters = {};
+                $('#startDate, #endDate, #productType').val('');
+                loadProducts();
             });
         });
     </script>
 }
-
