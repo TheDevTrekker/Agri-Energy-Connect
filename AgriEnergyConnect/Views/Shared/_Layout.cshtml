@@ -4,6 +4,12 @@
 
 @{
     var currentUser = await UserManager.GetUserAsync(User);
+
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+
+    var currentPage = ViewContext.ActionDescriptor?.DisplayName ?? "";
+    var isAccountPage = currentPage.Contains("/Account/Manage/Index");
 }
 
 <!DOCTYPE html>
@@ -40,13 +46,13 @@
                             {
                                 @if (User.IsInRole("Farmer"))
                                 {
-                                    <li><a href="/Farmer/Dashboard">Dashboard</a></li>
+                                    <li><a href="/Farmer/Dashboard" class="@(currentController == "Farmer" && currentAction == "Dashboard" ? "active" : "")">Dashboard</a></li>
                                 }
                                 else if (User.IsInRole("Employee"))
                                 {
-                                    <li><a href="/Employee/Dashboard">Dashboard</a></li>
-                                    <li><a href="/Employee/AddFarmer">Add Farmer</a></li>
-                                    <li><a href="/Employee/ViewProducts">View Products</a></li>
+                                    <li><a href="/Employee/Dashboard" class="@(currentController == "Employee" && currentAction == "Dashboard" ? "active" : "")">Dashboard</a></li>
+                                    <li><a href="/Employee/AddFarmer" class="@(currentController == "Employee" && currentAction == "AddFarmer" ? "active" : "")">Add Farmer</a></li>
+                                    <li><a href="/Employee/ViewProducts" class="@(currentController == "Employee" && currentAction == "ViewProducts" ? "active" : "")">View Products</a></li>
                                 }
                             }
                         </ul>
@@ -58,7 +64,8 @@
                             @if (User.Identity.IsAuthenticated && currentUser != null)
                             {
                                 <li class="nav-item d-flex align-items-center">
-                                    <a class="nav-link d-flex align-items-center" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage Account">
+                                    <a class="nav-link d-flex align-items-center @(isAccountPage ? "active" : "")"
+                                       asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage Account">
                                         <img src="~/images/svg_account.svg" alt="Account Icon" width="20" height="20" class="me-1" />
                                         <span>@currentUser.FullName</span>
                                     </a>
@@ -78,11 +85,13 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container-fluid">
-            &copy; 2025 - AgriEnergyConnect - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="custom-footer mt-auto py-3">
+        <div class="container-fluid d-flex justify-content-start align-items-center flex-wrap gap-3 px-4">
+            <span class="small mb-0">&copy; 2025 AgriEnergyConnect</span>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="small text-decoration-none">Privacy Policy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
