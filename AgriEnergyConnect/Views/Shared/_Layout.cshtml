@@ -30,7 +30,7 @@
                 <div class="navbar-left">
                     <a class="custom-brand" asp-area="" asp-controller="Home" asp-action="Index">
                         <img src="~/images/Logo-Agri.png" alt="AgriEnergyConnect Logo" class="custom-logo" />
-                        <span class="brand-text">Agri-Energy Connect</span>
+                        <span class="brand-text" style="font-family: Bookman Old Style; font-size: 18px;">Agri-Energy Connect</span>
                     </a>
                 </div>
 
@@ -63,8 +63,8 @@
                         <ul class="custom-nav">
                             @if (User.Identity.IsAuthenticated && currentUser != null)
                             {
-                                <li class="nav-item d-flex align-items-center">
-                                    <a class="nav-link d-flex align-items-center @(isAccountPage ? "active" : "")"
+                                <li>
+                                    <a class="@(isAccountPage ? "active" : "")"
                                        asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage Account">
                                         <img src="~/images/svg_account.svg" alt="Account Icon" width="20" height="20" class="me-1" />
                                         <span>@currentUser.FullName</span>

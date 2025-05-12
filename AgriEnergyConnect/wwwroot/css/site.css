@@ -55,7 +55,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Stylish and readable */
     font-weight: 600;
     color: #2d572c; /* Match your brand or customize */
-    margin-left: 12px;
+    margin-left: 10px;
     user-select: none;
     white-space: nowrap;
 }
@@ -110,9 +110,9 @@ body {
         cursor: pointer;
         padding: 0;
     }
-     
+
         .custom-nav li a:hover {
-            color: #007bff;
+            color: #2d572c;
         }
 
         .custom-nav li a.active {
@@ -153,6 +153,45 @@ main {
             color: black;
         }
 
+
+
+.btn-primary {
+    border: 1px solid forestgreen;
+    background-color: forestgreen;
+    color: white;
+    transition: all 0.3s ease-in-out;
+}
+    .btn-primary:hover {
+        background-color: #006400;
+        border-color: #006400;
+        color: white;
+    }
+
+.btn-outline-secondary {
+    border: 1px solid black;
+    background-color: transparent;
+    color: black;
+    transition: all 0.3s ease-in-out;
+
+}
+
+    .btn-outline-secondary:hover {
+        background-color: forestgreen;
+        border-color: forestgreen;
+        color: white;
+    }
+
+.custom-link {
+    color: #2d572c;
+}
+    .custom-link:hover {
+        color: forestgreen;
+    }
+
+.nav-link.active {
+    background-color: #2d572c !important; /* Green background for active link */
+    color: white !important; /* White text for active link */
+}
 
 /* Responsive Styles */
 @media (max-width: 768px) {

@@ -6,58 +6,66 @@
     ViewData["Title"] = "Home Page";
     var currentUser = await UserManager.GetUserAsync(User);
 }
+<style>
+    .text-green {
+        font-family: 'Bookman Old Style';
+        color: #28a745; /* Match your navbar green */
+    }
 
-@if (currentUser == null)
-{
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
-                <h2 class="mb-4">Welcome to Agri-Energy Connect</h2>
-                <p class="lead">Log in or register to explore farmer profiles, products, and green tech solutions.</p>
+    .custom-btn {
+        border: 1px solid black;
+        background-color: transparent;
+        color: black;
+        padding: 12px 12px;
+        transition: all 0.3s ease-in-out;
+        text-transform: uppercase;
+    }
 
-                <a class="btn btn-primary btn-lg m-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                <a class="btn btn-outline-secondary btn-lg m-2" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        .custom-btn:hover {
+            background-color: #28a745;
+            border-color: #28a745;
+            color: white;
+        }
+</style>
+
+<div class="container py-5">
+    @if (currentUser == null)
+    {
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center">
+                    <h1 class="mb-4">Welcome to <span class="text-green">Agri-Energy</span> Connect</h1>
+                    <p class="lead">Log in or register to explore farmer profiles, products, and green tech solutions.</p>
+
+                    <a class="btn btn-primary btn-lg m-2" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    <a class="btn btn-outline-secondary btn-lg m-2" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                </div>
             </div>
         </div>
-    </div>
-}
-else
-{
-    <div class="container text-center">
-        <h1 class="mb-4">Welcome, @currentUser.FullName</h1>
-
-        @if (User.IsInRole("Farmer"))
-        {
-            <div class="farmer-section">
-                <h2>Welcome to Agri-Energy Connect, Farmers!</h2>
-                <p>Agri-Energy Connect helps you manage your farming activities, get access to energy-efficient solutions, and connect with energy providers to optimize your farm’s energy use. Here’s what you can do:</p>
-                <ul class="list-group">
-                    <li class="list-group-item">Explore sustainable energy options for your farm.</li>
-                    <li class="list-group-item">Access farming resources and tips to improve your crop yield.</li>
-                    <li class="list-group-item">Monitor your energy consumption and costs.</li>
-                    <li class="list-group-item">Connect with agricultural experts for advice and assistance.</li>
-                </ul>
-                <p class="mt-4">Start by browsing available products and energy solutions!</p>
-                <button class="btn btn-primary mt-3">Explore Products</button>
-            </div>
-        }
-        else if (User.IsInRole("Employee"))
-        {
-        <div class="employee-section">
-            <h2>Welcome to Agri-Energy Connect, Employees!</h2>
-            <p>As an employee, you play a vital role in supporting our farmers and managing energy solutions. Here’s what you can do:</p>
-            <ul class="list-group">
-                <li class="list-group-item">Assist farmers in selecting the best energy solutions for their farms.</li>
-                <li class="list-group-item">Ensure smooth operation of farm-to-energy connections.</li>
-                <li class="list-group-item">Provide support and guidance to farmers in utilizing energy-efficient technologies.</li>
-                <li class="list-group-item">Monitor and report farm energy usage data.</li>
-            </ul>
-            <p class="mt-4">Start by checking farmer profiles and assisting with energy needs!</p>
-            <button class="btn btn-primary mt-3">Manage Farmers</button>
+    }
+    else
+    {
+        <div class="text-center">
+            @if (User.IsInRole("Farmer"))
+            {
+                <div class="content position-relative">
+                    <h1 class="display-3 fw-bold">
+                        We Are <span class="text-green">Connected</span>
+                    </h1>
+                    <p class="lead mb-4">Linking farmers and energy innovators through Agri-Energy Connect</p>
+                    <a class="btn btn-outline-light btn-lg custom-btn" asp-controller="Farmer" asp-action="Dashboard">Get Started</a>
+                </div>
+            }
+            else if (User.IsInRole("Employee"))
+            {
+                <div class="content position-relative">
+                    <h1 class="display-3 fw-bold">
+                        We Are <span class="text-green">Connected</span>
+                    </h1>
+                    <p class="lead mb-4">Linking farmers and energy innovators through Agri-Energy Connect</p>
+                    <a class="btn btn-outline-light btn-lg custom-btn" asp-controller="Employee" asp-action="Dashboard">Get Started</a>
+                </div>
+            }
         </div>
-        }
-    </div>
-}
-
-
-
+    }
+</div>
