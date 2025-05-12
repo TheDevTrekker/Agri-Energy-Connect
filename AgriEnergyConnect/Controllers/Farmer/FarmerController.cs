@@ -39,6 +39,11 @@ namespace AgriEnergyConnect.Controllers.Farmer
             return View(viewModel);
         }
 
+        public async Task<IActionResult> AddProduct()
+        {
+            return View();
+        }
+
         // Product POST
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -65,6 +70,25 @@ namespace AgriEnergyConnect.Controllers.Farmer
             return RedirectToAction("Dashboard");
         }
 
-       
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var product = await _context.Products
+                .Include(p => p.Farmer)
+                .FirstOrDefaultAsync(p => p.Id == id && p.Farmer.ApplicationUserId == user.Id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Dashboard");
+        }
+
     }
 }

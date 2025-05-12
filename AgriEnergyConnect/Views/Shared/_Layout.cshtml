@@ -47,6 +47,7 @@
                                 @if (User.IsInRole("Farmer"))
                                 {
                                     <li><a href="/Farmer/Dashboard" class="@(currentController == "Farmer" && currentAction == "Dashboard" ? "active" : "")">Dashboard</a></li>
+                                    <li><a href="/Farmer/AddProduct" class="@(currentController == "Farmer" && currentAction == "AddProduct" ? "active" : "")">Add Product</a></li>
                                 }
                                 else if (User.IsInRole("Employee"))
                                 {
