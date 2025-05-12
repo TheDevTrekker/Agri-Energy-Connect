@@ -42,7 +42,7 @@ namespace AgriEnergyConnect.Controllers.Farmer
         // Product POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddProduct(string Name, string Category, DateTime ProductionDate)
+        public async Task<IActionResult> AddProduct(string Name, string Category, string Description, DateTime ProductionDate)
         {
             var user = await _userManager.GetUserAsync(User);
             var farmer = await _context.Farmers.FirstOrDefaultAsync(f => f.ApplicationUserId == user.Id);
@@ -54,6 +54,7 @@ namespace AgriEnergyConnect.Controllers.Farmer
             {
                 Name = Name,
                 Category = Category,
+                Description = Description,
                 ProductionDate = ProductionDate,
                 FarmerId = farmer.Id
             };

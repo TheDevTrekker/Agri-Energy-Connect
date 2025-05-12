@@ -104,14 +104,16 @@ static async Task SeedDataAsync(IServiceProvider serviceProvider)
             {
                 FarmerId = farmerProfile.Id,
                 Name = "Organic Tomatoes",
-                Category = "Produce",
+                Category = "Fresh Produce",
+                Description = "No pesticides or injections",
                 ProductionDate = DateTime.Parse("2025-03-05")
             },
             new Product
             {
                 FarmerId = farmerProfile.Id,
                 Name = "Free-range Eggs",
-                Category = "Animal Produce",
+                Category = "Livestock & Animal Products",
+                Description = "High quality free range eggs maintained with highest standards",
                 ProductionDate= DateTime.Parse("2024-08-22"),
             }
         );

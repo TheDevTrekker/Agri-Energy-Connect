@@ -13,6 +13,9 @@ namespace AgriEnergyConnect.Models
         [Required]
         public string Category { get; set; }
 
+        public string Description { get; set; }
+
+
         [Required]
         public DateTime ProductionDate { get; set; }
 

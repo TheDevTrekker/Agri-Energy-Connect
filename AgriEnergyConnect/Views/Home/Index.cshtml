@@ -7,18 +7,6 @@
     var currentUser = await UserManager.GetUserAsync(User);
 }
 
-<head>
-    <style>
-        body{
-            background-image: url('/images/Background.jpg');
-            background-size: cover; /* Optional: scales the image to cover the whole background */
-            background-repeat: no-repeat; /* Optional: prevents tiling */
-            background-position: center;
-        }
-    </style>
-</head>
-
-
 @if (currentUser == null)
 {
     <div class="container mt-5">
@@ -33,9 +21,43 @@
         </div>
     </div>
 }
-else{
-    <div>
-        <h1>Welcome, @currentUser.FullName</h1>
+else
+{
+    <div class="container text-center">
+        <h1 class="mb-4">Welcome, @currentUser.FullName</h1>
+
+        @if (User.IsInRole("Farmer"))
+        {
+            <div class="farmer-section">
+                <h2>Welcome to Agri-Energy Connect, Farmers!</h2>
+                <p>Agri-Energy Connect helps you manage your farming activities, get access to energy-efficient solutions, and connect with energy providers to optimize your farm’s energy use. Here’s what you can do:</p>
+                <ul class="list-group">
+                    <li class="list-group-item">Explore sustainable energy options for your farm.</li>
+                    <li class="list-group-item">Access farming resources and tips to improve your crop yield.</li>
+                    <li class="list-group-item">Monitor your energy consumption and costs.</li>
+                    <li class="list-group-item">Connect with agricultural experts for advice and assistance.</li>
+                </ul>
+                <p class="mt-4">Start by browsing available products and energy solutions!</p>
+                <button class="btn btn-primary mt-3">Explore Products</button>
+            </div>
+        }
+        else if (User.IsInRole("Employee"))
+        {
+        <div class="employee-section">
+            <h2>Welcome to Agri-Energy Connect, Employees!</h2>
+            <p>As an employee, you play a vital role in supporting our farmers and managing energy solutions. Here’s what you can do:</p>
+            <ul class="list-group">
+                <li class="list-group-item">Assist farmers in selecting the best energy solutions for their farms.</li>
+                <li class="list-group-item">Ensure smooth operation of farm-to-energy connections.</li>
+                <li class="list-group-item">Provide support and guidance to farmers in utilizing energy-efficient technologies.</li>
+                <li class="list-group-item">Monitor and report farm energy usage data.</li>
+            </ul>
+            <p class="mt-4">Start by checking farmer profiles and assisting with energy needs!</p>
+            <button class="btn btn-primary mt-3">Manage Farmers</button>
+        </div>
+        }
     </div>
 }
+
+
 

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Farmer Dashboard Page";
 }
 
-<h3>Add a New Product</h3>
+<h3 style="margin-top: 30px;">Add a New Product</h3>
 <form asp-action="AddProduct" method="post">
     <div class="form-group">
         <label>Name</label>
@@ -12,13 +12,31 @@
     </div>
     <div class="form-group">
         <label>Category</label>
-        <input name="Category" class="form-control" required />
+        <select name="Category" class="form-control" required>
+            <option value="">-- Select Category --</option>
+            <option>Fresh Produce</option>
+            <option>Grains & Cereals</option>
+            <option>Livestock & Animal Products</option>
+            <option>Dairy Products</option>
+            <option>Poultry</option>
+            <option>Horticulture</option>
+            <option>Legumes & Nuts</option>
+            <option>Organic Products</option>
+            <option>Processed Goods</option>
+            <option>Other</option>
+        </select>
     </div>
+
     <div class="form-group">
         <label>Production Date</label>
         <input name="ProductionDate" type="date" class="form-control" required />
     </div>
-    <button type="submit" class="btn btn-success">Add Product</button>
+
+    <div class="form-group">
+        <label>Desctiption</label>
+        <input name="Description" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-success" style="margin-top: 15px;">Add Product</button>
 </form>
 
 <hr />
@@ -26,25 +44,29 @@
 <h3>Your Products</h3>
 @if (Model.Products.Any())
 {
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Production Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in Model.Products)
-            {
+    <div class="bg-white">
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td>@product.Name</td>
-                    <td>@product.Category</td>
-                    <td>@product.ProductionDate.ToShortDateString()</td>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Production Date</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.Products)
+                {
+                    <tr>
+                        <td>@product.Name</td>
+                        <td>@product.Category</td>
+                        <td>@product.Description</td>
+                        <td>@product.ProductionDate.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 else
 {
