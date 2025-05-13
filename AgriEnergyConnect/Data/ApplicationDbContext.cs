@@ -7,7 +7,7 @@ namespace AgriEnergyConnect.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        // Constructor accepting DbContext options and passing them to the base IdentityDbContext
+        // Constructor accepting DbContext options and passing them to the base IdentityDbContext (Microsoft, 2025) (Yu, 2025)
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
 

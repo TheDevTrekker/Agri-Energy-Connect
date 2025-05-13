@@ -15,7 +15,7 @@ namespace AgriEnergyConnect.Controllers.Employee
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        // Constructor injecting logger, database context, and user manager services
+        // Constructor injecting logger, database context, and user manager services (Microsoft, 2025) (Yu, 2025)
         public EmployeeController(ILogger<HomeController> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
@@ -39,15 +39,13 @@ namespace AgriEnergyConnect.Controllers.Employee
             return View(farmers);
         }
 
-        // GET: /Employee/AddFarmer
         // Displays the form to add a new farmer
         public IActionResult AddFarmer()
         {
             return View();
         }
 
-        // POST: /Employee/AddFarmer
-        // Handles the submission of the form to create a new farmer and associated user account
+        // Handles the submission of the form to create a new farmer and associated user account (Microsoft, 2025) (Yu, 2025)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddFarmer(CreateFarmerViewModel model)

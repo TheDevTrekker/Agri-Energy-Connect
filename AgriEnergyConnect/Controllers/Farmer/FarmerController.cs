@@ -10,7 +10,7 @@ namespace AgriEnergyConnect.Controllers.Farmer
     // This controller handles actions related to farmers, such as viewing the dashboard and managing products
     public class FarmerController : Controller
     {
-        // Dependency-injected database context for accessing the application's data
+        // Dependency-injected database context for accessing the application's data (Microsoft, 2025) (Yu, 2025)
         private readonly ApplicationDbContext _context;
 
         // UserManager to manage application users (e.g., get currently logged-in user)
@@ -89,7 +89,7 @@ namespace AgriEnergyConnect.Controllers.Farmer
             return RedirectToAction("Dashboard");
         }
 
-        // Handles deletion of a product by the farmer
+        // Handles deletion of a product by the farmer (Microsoft, 2025) (Yu, 2025)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteProduct(int id)
