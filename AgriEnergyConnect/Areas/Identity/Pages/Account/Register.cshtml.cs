@@ -94,7 +94,7 @@ namespace AgriEnergyConnect.Areas.Identity.Pages.Account
             public string Role { get; set; }
 
             [Display(Name ="Location")]
-            public string? Location { get; set; }
+            public string Location { get; set; }
         }
 
 
