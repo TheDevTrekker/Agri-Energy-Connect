@@ -49,7 +49,7 @@ Make sure the following tools are installed before you start:
   - Open appsettings.json and update the connection string with your local SQL Server name:
     ```bash
     "ConnectionStrings": {
-      "DefaultConnection": "Server=YOUR_SERVER_NAME;Database=AgriEnergyDB;Trusted_Connection=True;"
+      "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=AgriEnergyConnectDB;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true"
     }
     ```
     
