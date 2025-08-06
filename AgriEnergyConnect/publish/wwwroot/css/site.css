@@ -1,0 +1,235 @@
+/* Background image for full page */
+body {
+    background-image: url('/images/Background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.custom-navbar {
+    background-color: rgba(255, 255, 255, 0.0);
+    backdrop-filter: blur(6px);
+    padding: 0.5rem 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.custom-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    margin: 0 auto;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: flex-start;
+    flex-shrink: 0;
+    padding-left: 20px;
+}
+
+.navbar-center {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-right {
+    margin-left: auto; /* Pushes right section all the way to the right */
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.custom-logo {
+    height: 80px;
+    width: auto;
+}
+
+.brand-text {
+    font-size: 26px; /* Larger text */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Stylish and readable */
+    font-weight: 600;
+    color: #2d572c; /* Match your brand or customize */
+    margin-left: 10px;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.custom-brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+    .custom-brand:focus,
+    .custom-brand:active {
+        outline: none;
+        background: none;
+        color: inherit;
+    }
+
+
+.hamburger {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: none; /* shown only on mobile */
+    margin-left: auto;
+}
+
+.navbar-menu {
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.custom-nav {
+    list-style: none;
+    display: flex;
+    gap: 1.2rem;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+}
+
+    .custom-nav li a {
+        text-decoration: none;
+        color: black;
+        font-size: 18px;
+        transition: color 0.3s;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+    }
+
+        .custom-nav li a:hover {
+            color: #2d572c;
+        }
+
+        .custom-nav li a.active {
+            text-decoration: underline;
+            font-weight: bold;
+            color: #2d572c; /* Optional: match brand color */
+        }
+
+/* Footer */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+.custom-footer {
+    background-color: rgba(0, 0, 0, 0.0); /* light background */
+    backdrop-filter: blur(1px);
+    border-top: 1px solid rgba(0, 0, 0, 0.0);
+    color: white;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+    .custom-footer a {
+        color: white;
+        transition: color 0.3s ease;
+        text-decoration: none;
+    }
+
+        .custom-footer a:hover {
+            color: black;
+        }
+
+
+
+.btn-primary {
+    border: 1px solid forestgreen;
+    background-color: forestgreen;
+    color: white;
+    transition: all 0.3s ease-in-out;
+}
+    .btn-primary:hover {
+        background-color: #006400;
+        border-color: #006400;
+        color: white;
+    }
+
+.btn-outline-secondary {
+    border: 1px solid black;
+    background-color: transparent;
+    color: black;
+    transition: all 0.3s ease-in-out;
+
+}
+
+    .btn-outline-secondary:hover {
+        background-color: forestgreen;
+        border-color: forestgreen;
+        color: white;
+    }
+
+.custom-link {
+    color: #2d572c;
+}
+    .custom-link:hover {
+        color: forestgreen;
+    }
+
+.nav-link.active {
+    background-color: #2d572c !important; /* Green background for active link */
+    color: white !important; /* White text for active link */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .navbar-menu {
+        width: 100%;
+        flex-direction: column;
+        display: none;
+    }
+
+        .navbar-menu.show {
+            display: flex;
+        }
+
+    .navbar-center,
+    .navbar-right {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .custom-nav {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.75rem;
+    }
+
+        .custom-nav li {
+            width: 100%;
+        }
+
+            .custom-nav li a{
+                width: 100%;
+                display: block;
+                padding: 0.5rem 0;
+            }
+
+}
