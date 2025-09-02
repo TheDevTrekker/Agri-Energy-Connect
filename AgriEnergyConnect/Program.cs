@@ -52,11 +52,13 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var dbContext = services.GetRequiredService<ApplicationDbContext>();
 
-    await context.Database.MigrateAsync();
+    if (app.Environment.IsDevelopment())
+    {
+        await dbContext.Database.MigrateAsync();
+    }
 
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
     string[] roles = { "Farmer", "Employee" };
-
     foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
@@ -67,6 +69,7 @@ using (var scope = app.Services.CreateScope())
 
     await SeedDataAsync(services);
 }
+
 
 app.Run();
 
